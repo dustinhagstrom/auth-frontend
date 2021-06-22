@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { isAlpha, isAlphanumeric, isEmail, isStrongPassword } from "validator";
 import "./Signup.css";
 export class Signup extends Component {
   state = {
@@ -22,11 +23,117 @@ export class Signup extends Component {
         [event.target.name]: event.target.value,
       },
       () => {
-        // console.log("Inside setState Callback");
-        // console.log(this.state.firstName);
-        // console.log(event.target.name, ":", event.target.value);
+        if (
+          event.target.name === "firstName" ||
+          event.target.name === "lastName"
+        ) {
+          this.handleFirstNameAndLastNameInput(event);
+        }
+        if (event.target.name === "username") {
+          this.handlesUsernameInput(event);
+        }
+
+        if (event.target.name === "email") {
+          this.handlesEmailInput(event);
+        }
+        if (event.target.name === "password") {
+          this.handlesPasswordInput(event);
+        }
+        if (event.target.name === "confirmPassword") {
+          this.handlesConfirmPasswordInput(event);
+        }
       }
     );
+  };
+
+  handleFirstNameAndLastNameInput = (event) => {
+    if (this.state[event.target.name].length > 0) {
+      if (isAlpha(this.state[event.target.name])) {
+        this.setState({
+          [`${event.target.name}Error`]: "",
+        });
+      } else {
+        this.setState({
+          [`${event.target.name}Error`]: `${event.target.placeholder} can only contain letters!`,
+        });
+      }
+    } else {
+      this.setState({
+        [`${event.target.name}Error`]: `${event.target.placeholder} cannot be empty.`,
+      });
+    }
+  };
+
+  handlesUsernameInput = (event) => {
+    if (this.state.username.length > 0) {
+      if (isAlphanumeric(this.state.username)) {
+        this.setState({
+          [`${event.target.name}Error`]: "",
+        });
+      } else {
+        this.setState({
+          [`${event.target.name}Error`]: `${event.target.placeholder} can only have alphanumeric characters.`,
+        });
+      }
+    } else {
+      this.setState({
+        [`${event.target.name}Error`]: `${event.target.placeholder} cannot be empty.`,
+      });
+    }
+  };
+
+  handlesEmailInput = (event) => {
+    if (this.state.email.length === 0) {
+      this.setState({
+        emailError: "Email cannot be empty.",
+      });
+    } else {
+      if (isEmail(this.state.email)) {
+        this.setState({
+          emailError: "",
+        });
+      } else {
+        this.setState({
+          emailError: "Please enter a valid Email!",
+        });
+      }
+    }
+  };
+
+  handlesPasswordInput = (event) => {
+    if (this.state.password.length > 0) {
+      if (isStrongPassword(this.state.password)) {
+        this.setState({
+          [`${event.target.name}Error`]: "",
+        });
+      } else {
+        this.setState({
+          [`${event.target.name}Error`]: `${event.target.placeholder} must be at least 8 characters long, have at least one uppercase and lowercase letter, and contain at least one special character.`,
+        });
+      }
+    } else {
+      this.setState({
+        [`${event.target.name}Error`]: `${event.target.placeholder} cannot be empty`,
+      });
+    }
+  };
+
+  handlesConfirmPasswordInput = (event) => {
+    if (this.state.confirmPassword.length > 0) {
+      if (this.state.confirmPassword === this.state.password) {
+        this.setState({
+          [`${event.target.name}Error`]: "",
+        });
+      } else {
+        this.setState({
+          [`${event.target.name}Error`]: "Your passwords do not match!",
+        });
+      }
+    } else {
+      this.setState({
+        [`${event.target.name}Error`]: `${event.target.placeholder} cannot be empty`,
+      });
+    }
   };
 
   handleOnSubmit = (event) => {
