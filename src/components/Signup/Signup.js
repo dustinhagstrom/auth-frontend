@@ -15,9 +15,16 @@ export class Signup extends Component {
     emailError: "",
     passwordError: "",
     confirmPasswordError: "",
-    onConfirmPasswordFocus: false,
     isButtonDisabled: true,
+    firstNameOnFocus: false,
+    lastNameOnFocus: false,
+    usernameOnFocus: false,
+    emailOnFocus: false,
+    passwordOnFocus: false,
+    confirmPasswordOnFocus: false,
   };
+
+  //TODO max character limit for inputs, no whitespace, min lengths, etc.
 
   handleOnChange = (event) => {
     this.setState(
@@ -54,29 +61,31 @@ export class Signup extends Component {
         this.setState(
           {
             [`${event.target.name}Error`]: "",
-          },
-          () => {
-            this.handlesIsButtonDisabled();
           }
+          // () => {
+          //   this.handlesIsButtonDisabled();
+          // }
         );
       } else {
         this.setState(
           {
             [`${event.target.name}Error`]: `${event.target.placeholder} can only contain letters!`,
-          },
-          () => {
-            this.handlesIsButtonDisabled();
+            isButtonDisabled: true,
           }
+          // () => {
+          //   this.handlesIsButtonDisabled();
+          // }
         );
       }
     } else {
       this.setState(
         {
           [`${event.target.name}Error`]: `${event.target.placeholder} cannot be empty.`,
-        },
-        () => {
-          this.handlesIsButtonDisabled();
+          isButtonDisabled: true,
         }
+        // () => {
+        //   this.handlesIsButtonDisabled();
+        // }
       );
     }
   };
@@ -87,29 +96,31 @@ export class Signup extends Component {
         this.setState(
           {
             usernameError: "",
-          },
-          () => {
-            this.handlesIsButtonDisabled();
           }
+          // () => {
+          //   this.handlesIsButtonDisabled();
+          // }
         );
       } else {
         this.setState(
           {
             usernameError: `${event.target.placeholder} can only have alphanumeric characters.`,
-          },
-          () => {
-            this.handlesIsButtonDisabled();
+            isButtonDisabled: true,
           }
+          // () => {
+          //   this.handlesIsButtonDisabled();
+          // }
         );
       }
     } else {
       this.setState(
         {
           usernameError: `${event.target.placeholder} cannot be empty.`,
-        },
-        () => {
-          this.handlesIsButtonDisabled();
+          isButtonDisabled: true,
         }
+        // () => {
+        //   this.handlesIsButtonDisabled();
+        // }
       );
     }
   };
@@ -119,29 +130,31 @@ export class Signup extends Component {
       this.setState(
         {
           emailError: "Email cannot be empty.",
-        },
-        () => {
-          this.handlesIsButtonDisabled();
+          isButtonDisabled: true,
         }
+        // () => {
+        //   this.handlesIsButtonDisabled();
+        // }
       );
     } else {
       if (isEmail(this.state.email)) {
         this.setState(
           {
             emailError: "",
-          },
-          () => {
-            this.handlesIsButtonDisabled();
           }
+          // () => {
+          //   this.handlesIsButtonDisabled();
+          // }
         );
       } else {
         this.setState(
           {
             emailError: "Please enter a valid Email!",
-          },
-          () => {
-            this.handlesIsButtonDisabled();
+            isButtonDisabled: true,
           }
+          // () => {
+          //   this.handlesIsButtonDisabled();
+          // }
         );
       }
     }
@@ -150,24 +163,25 @@ export class Signup extends Component {
   //i want it to check to see if the password is strong, if it is then no error message. but if the password doesn't match the confirm password block then I want the confirm password block to throw a matching error
 
   handlesPasswordInput = () => {
-    if (this.state.onConfirmPasswordFocus) {
+    if (this.state.confirmPasswordOnFocus) {
       if (this.state.password !== this.state.confirmPassword) {
         this.setState(
           {
             confirmPasswordError: "Your passwords do not match!",
-          },
-          () => {
-            this.handlesIsButtonDisabled();
+            isButtonDisabled: true,
           }
+          // () => {
+          //   this.handlesIsButtonDisabled();
+          // }
         );
       } else {
         this.setState(
           {
             confirmPasswordError: "",
-          },
-          () => {
-            this.handlesIsButtonDisabled();
           }
+          // () => {
+          //   this.handlesIsButtonDisabled();
+          // }
         );
       }
     }
@@ -177,29 +191,31 @@ export class Signup extends Component {
         this.setState(
           {
             passwordError: "",
-          },
-          () => {
-            this.handlesIsButtonDisabled();
           }
+          // () => {
+          //   this.handlesIsButtonDisabled();
+          // }
         );
       } else {
         this.setState(
           {
             passwordError: `Password must be at least 8 characters long, have at least one uppercase and lowercase letter, and contain at least one special character.`,
-          },
-          () => {
-            this.handlesIsButtonDisabled();
+            isButtonDisabled: true,
           }
+          // () => {
+          //   this.handlesIsButtonDisabled();
+          // }
         );
       }
     } else {
       this.setState(
         {
           passwordError: `Password cannot be empty`,
-        },
-        () => {
-          this.handlesIsButtonDisabled();
+          isButtonDisabled: true,
         }
+        // () => {
+        //   this.handlesIsButtonDisabled();
+        // }
       );
     }
   };
@@ -210,19 +226,20 @@ export class Signup extends Component {
         this.setState(
           {
             confirmPasswordError: "",
-          },
-          () => {
-            this.handlesIsButtonDisabled();
           }
+          // () => {
+          //   this.handlesIsButtonDisabled();
+          // }
         );
       } else {
         this.setState(
           {
             confirmPasswordError: "Your passwords do not match!",
-          },
-          () => {
-            this.handlesIsButtonDisabled();
+            isButtonDisabled: true,
           }
+          // () => {
+          //   this.handlesIsButtonDisabled();
+          // }
         );
       }
     }
@@ -238,46 +255,75 @@ export class Signup extends Component {
     if (this.state[event.target.name].length === 0) {
       this.setState({
         [`${event.target.name}Error`]: `${event.target.placeholder} cannot be empty`,
-      });
-    }
-  };
-
-  handlesConfirmPasswordOnFocus = () => {
-    if (!this.state.onConfirmPasswordFocus) {
-      this.setState({
-        onConfirmPasswordFocus: true,
-      });
-    }
-  };
-
-  handlesIsButtonDisabled = () => {
-    if (
-      this.state.firstName &&
-      this.state.lastName &&
-      this.state.username &&
-      this.state.email &&
-      this.state.password &&
-      this.state.confirmPassword
-    ) {
-      if (
-        this.state.confirmPasswordError ||
-        this.state.passwordError ||
-        this.state.usernameError ||
-        this.state.emailError ||
-        this.state.firstNameError ||
-        this.state.lastNameError
-      ) {
-        this.setState({
-          isButtonDisabled: true,
-        });
-      } else {
-        this.setState({
-          isButtonDisabled: false,
-        });
-      }
-    } else {
-      this.setState({
         isButtonDisabled: true,
+      });
+    }
+  };
+
+  // handlesIsButtonDisabled = () => {
+  //   if (
+  //     this.state.firstName &&
+  //     this.state.lastName &&
+  //     this.state.username &&
+  //     this.state.email &&
+  //     this.state.password &&
+  //     this.state.confirmPassword
+  //   ) {
+  //     if (
+  //       this.state.confirmPasswordError ||
+  //       this.state.passwordError ||
+  //       this.state.usernameError ||
+  //       this.state.emailError ||
+  //       this.state.firstNameError ||
+  //       this.state.lastNameError
+  //     ) {
+  //       this.setState({
+  //         isButtonDisabled: true,
+  //       });
+  //     } else {
+  //       this.setState({
+  //         isButtonDisabled: false,
+  //       });
+  //     }
+  //   } else {
+  //     this.setState({
+  //       isButtonDisabled: true,
+  //     });
+  //   }
+  // };
+
+  //any time setState called componentDidUpdate is called
+  componentDidUpdate = (prevProps, prevState) => {
+    if (prevState.isButtonDisabled === true) {
+      if (
+        this.state.firstNameOnFocus &&
+        this.state.lastNameOnFocus &&
+        this.state.usernameOnFocus &&
+        this.state.emailOnFocus &&
+        this.state.passwordOnFocus &&
+        this.state.confirmPasswordOnFocus
+      ) {
+        if (
+          this.state.firstNameError.length === 0 &&
+          this.state.lastNameError.length === 0 &&
+          this.state.usernameError.length === 0 &&
+          this.state.emailError.length === 0 &&
+          this.state.passwordError.length === 0 &&
+          this.state.confirmPasswordError.length === 0 &&
+          this.state.password === this.state.confirmPassword
+        ) {
+          this.setState({
+            isButtonDisabled: false,
+          });
+        }
+      }
+    }
+  };
+
+  handleInputOnFocus = (event) => {
+    if (!this.state[`${event.target.name}OnFocus`]) {
+      this.setState({
+        [`${event.target.name}OnFocus`]: true,
       });
     }
   };
@@ -315,6 +361,7 @@ export class Signup extends Component {
                   onChange={this.handleOnChange}
                   autoFocus
                   onBlur={this.handleOnBlur}
+                  onFocus={this.handleInputOnFocus}
                 />
                 <div className="errorMessage">
                   {firstNameError && firstNameError}
@@ -331,6 +378,7 @@ export class Signup extends Component {
                   name="lastName"
                   onChange={this.handleOnChange}
                   onBlur={this.handleOnBlur}
+                  onFocus={this.handleInputOnFocus}
                 />
                 <div className="errorMessage">
                   {lastNameError && lastNameError}
@@ -348,6 +396,7 @@ export class Signup extends Component {
                   name="email"
                   onChange={this.handleOnChange}
                   onBlur={this.handleOnBlur}
+                  onFocus={this.handleInputOnFocus}
                 />
                 <div className="errorMessage">{emailError && emailError}</div>
               </div>
@@ -363,6 +412,7 @@ export class Signup extends Component {
                   name="username"
                   onChange={this.handleOnChange}
                   onBlur={this.handleOnBlur}
+                  onFocus={this.handleInputOnFocus}
                 />
                 <div className="errorMessage">
                   {usernameError && usernameError}
@@ -380,6 +430,7 @@ export class Signup extends Component {
                   name="password"
                   onChange={this.handleOnChange}
                   onBlur={this.handleOnBlur}
+                  onFocus={this.handleInputOnFocus}
                 />
                 <div className="errorMessage">
                   {passwordError && passwordError}
@@ -397,7 +448,7 @@ export class Signup extends Component {
                   name="confirmPassword"
                   onChange={this.handleOnChange}
                   onBlur={this.handleOnBlur}
-                  onFocus={this.handlesConfirmPasswordOnFocus}
+                  onFocus={this.handleInputOnFocus}
                 />
                 <div className="errorMessage">
                   {confirmPasswordError && confirmPasswordError}
