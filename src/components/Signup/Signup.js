@@ -1,5 +1,8 @@
 import React, { Component } from "react";
 import { isAlpha, isAlphanumeric, isEmail, isStrongPassword } from "validator";
+
+import Axios from "../utils/Axios";
+
 import "./Signup.css";
 export class Signup extends Component {
   state = {
@@ -245,10 +248,22 @@ export class Signup extends Component {
     }
   };
 
-  handleOnSubmit = (event) => {
+  handleOnSubmit = async (event) => {
     event.preventDefault();
 
-    console.log(this.state);
+    try {
+      let userInputObj = {
+        firstName: this.state.firstName,
+        lastName: this.state.lastName,
+        username: this.state.username,
+        email: this.state.email,
+        password: this.state.password,
+      };
+      let success = await Axios.post("/api/user/sign-up", userInputObj);
+      console.log(success);
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   handleOnBlur = (event) => {
