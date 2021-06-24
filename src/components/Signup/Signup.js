@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { isAlpha, isAlphanumeric, isEmail, isStrongPassword } from "validator";
+import { toast } from "react-toastify";
 
 import Axios from "../utils/Axios";
 
@@ -261,8 +262,27 @@ export class Signup extends Component {
       };
       let success = await Axios.post("/api/user/sign-up", userInputObj);
       console.log(success);
+      toast.success(`User created - Please login`, {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
     } catch (e) {
-      console.log(e);
+      console.log(e.response);
+      console.log(e.response.data.message);
+      toast.error(`🦄 ${e.response.data.message}`, {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
     }
   };
 
