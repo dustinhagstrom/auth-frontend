@@ -3,9 +3,6 @@ import { Link, NavLink } from "react-router-dom";
 import "./Nav.css";
 
 export class Nav extends Component {
-  state = {
-    isAuth: false,
-  };
   render() {
     return (
       <nav className="Navbar">
@@ -18,9 +15,9 @@ export class Nav extends Component {
         <div className="right-side-nav">
           <ul>
             <li>
-              {this.state.isAuth ? (
+              {this.props.user ? (
                 <NavLink activeClassName="selected" to="/profile">
-                  Profile
+                  Welcome Back - {this.props.user.email}
                 </NavLink>
               ) : (
                 <NavLink activeClassName="selected" to="/sign-up">
@@ -29,7 +26,7 @@ export class Nav extends Component {
               )}
             </li>
             <li>
-              {this.state.isAuth ? (
+              {this.props.user ? (
                 <NavLink
                   activeStyle={{ borderBottom: "1px solid white" }}
                   to="/logout"

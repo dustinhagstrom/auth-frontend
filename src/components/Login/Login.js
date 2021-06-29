@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { toast } from "react-toastify";
 import { isEmail, isEmpty } from "validator";
+import jwtDecode from "jwt-decode";
 
 import Axios from "../utils/Axios";
 
@@ -32,11 +33,6 @@ export class Login extends Component {
             if (isEmail(this.state.email)) {
               this.setState({
                 emailError: "",
-              });
-            } else {
-              this.setState({
-                emailError: "Please enter a valid email.",
-                isButtonDisabled: true,
               });
             }
           }
@@ -122,6 +118,13 @@ export class Login extends Component {
       let success = await Axios.post("api/user/login", userInputObj);
 
       let jwtToken = success.data.payload;
+      console.log(jwtToken);
+
+      let decodedToken = jwtDecode(jwtToken);
+      console.log(decodedToken);
+
+      this.props.handleUserLogin(decodedToken);
+      this.props.history.push("/movie");
 
       window.localStorage.setItem("jwtToken", jwtToken);
 
@@ -174,7 +177,7 @@ export class Login extends Component {
               <div className="block-container">
                 <label htmlFor="email">Email</label>
                 <input
-                  type="text"
+                  type="email"
                   id="email"
                   value={email}
                   name="email"
