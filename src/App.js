@@ -1,27 +1,33 @@
 import React, { Component } from "react";
-import { BrowserRouter as Router, Route } from "react-router-dom"; //bring in BrowserRouter component from react-router-dom and rename it as Router. Route is from react-router-dom as well
 import { ToastContainer } from "react-toastify";
+import MainRouter from "./MainRouter";
 
-import Signup from "./components/Signup/Signup";
-import Login from "./components/Login/Login";
-import Home from "./components/Home/Home";
-import Nav from "./components/Nav/Nav";
-
-import "react-toastify/dist/ReactToastify.css";
 import "./App.css";
+export class App extends Component {
+  state = {
+    user: null,
+  };
 
-function App() {
-  return (
-    <Router>
-      <ToastContainer />
-      <Nav />
+  handleUserLogin = (user) => {
+    this.setState({
+      user: {
+        email: user.email,
+      },
+    });
+  };
+
+  render() {
+    return (
       <>
-        <Route exact path="/sign-up" component={Signup} />
-        <Route exact path="/login" component={Login} />
-        <Route exact path="/" component={Home} />
+        <ToastContainer />
+
+        <MainRouter
+          user={this.state.user}
+          handleUserLogin={this.handleUserLogin}
+        />
       </>
-    </Router>
-  );
+    );
+  }
 }
 
 export default App;
