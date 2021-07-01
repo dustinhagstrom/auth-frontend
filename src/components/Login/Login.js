@@ -3,6 +3,7 @@ import { toast } from "react-toastify";
 import { isEmail, isEmpty } from "validator";
 import jwtDecode from "jwt-decode";
 
+import checkIfUserIsAuth from "../utils/checkIfUserIsAuth";
 import Axios from "../utils/Axios";
 
 import "./Login.css";
@@ -16,6 +17,14 @@ export class Login extends Component {
     passwordOnFocus: false,
     isButtonDisabled: true,
   };
+
+  componentDidMount() {
+    let isAuth = checkIfUserIsAuth();
+
+    if (isAuth) {
+      this.props.history.push("/movie");
+    }
+  }
 
   handleOnChange = (event) => {
     this.setState(
@@ -120,13 +129,13 @@ export class Login extends Component {
       let jwtToken = success.data.payload;
       console.log(jwtToken);
 
-      let decodedToken = jwtDecode(jwtToken);
+      let decodedToken = jwtDecode(jwtToken); //use jwt decode to decode the jwt token into information
       console.log(decodedToken);
 
       this.props.handleUserLogin(decodedToken);
-      this.props.history.push("/movie");
+      this.props.history.push("/movie"); //the push here is from Router history props object
 
-      window.localStorage.setItem("jwtToken", jwtToken);
+      window.localStorage.setItem("jwtToken", jwtToken); //stores the jwt token in local storage
 
       console.log(success.data.message);
       toast.success("🦄 Login success!", {

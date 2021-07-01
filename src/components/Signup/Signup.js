@@ -1,7 +1,9 @@
 import React, { Component } from "react";
 import { isAlpha, isAlphanumeric, isEmail, isStrongPassword } from "validator";
 import { toast } from "react-toastify";
+import jwtDecode from "jwt-decode";
 
+import checkIfUserIsAuth from "../utils/checkIfUserIsAuth";
 import Axios from "../utils/Axios";
 
 import "./Signup.css";
@@ -29,6 +31,14 @@ export class Signup extends Component {
   };
 
   //TODO max character limit for inputs, no whitespace, min lengths, etc.
+
+  componentDidMount() {
+    let isAuth = checkIfUserIsAuth();
+
+    if (isAuth) {
+      this.props.history.push("/movie");
+    }
+  }
 
   handleOnChange = (event) => {
     this.setState(
