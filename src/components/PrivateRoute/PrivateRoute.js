@@ -24,8 +24,10 @@ const PrivateRoute = ({ component: Component, user, ...rest }) => {
   console.log(Component);
   return (
     <Route
-      {...rest}
-      render={(routerProps) =>
+      {...rest} //bring in the props inherent to Route
+      render={(
+        routerProps //routerProps inherent to Route??
+      ) =>
         checkIfUserIsAuth ? (
           <Component {...routerProps} />
         ) : (
