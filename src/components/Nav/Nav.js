@@ -1,8 +1,9 @@
-import React, { Component } from "react";
+import React, { Component } from "react"; //import react, react-router-dom
 import { Link, NavLink } from "react-router-dom";
-import "./Nav.css";
+import "./Nav.css"; //bring in css
 
 export class Nav extends Component {
+  //make nav component
   render() {
     return (
       <nav className="Navbar">
@@ -15,6 +16,7 @@ export class Nav extends Component {
         <div className="right-side-nav">
           <ul>
             <li>
+              {/* if user logged in then link to /profile and welcome mess else sign up link */}
               {this.props.user ? (
                 <NavLink activeClassName="selected" to="/profile">
                   Welcome Back - {this.props.user.email}
@@ -26,6 +28,7 @@ export class Nav extends Component {
               )}
             </li>
             <li>
+              {/* if user logged in link to log out else login link */}
               {this.props.user ? (
                 <NavLink
                   activeStyle={{ borderBottom: "1px solid white" }}
@@ -50,4 +53,4 @@ export class Nav extends Component {
   }
 }
 
-export default Nav;
+export default Nav; //export nav

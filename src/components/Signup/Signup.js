@@ -1,13 +1,14 @@
-import React, { Component } from "react";
+import React, { Component } from "react"; //bring in react, validator, toast, jwt-decode
 import { isAlpha, isAlphanumeric, isEmail, isStrongPassword } from "validator";
 import { toast } from "react-toastify";
 import jwtDecode from "jwt-decode";
 
-import checkIfUserIsAuth from "../utils/checkIfUserIsAuth";
-import Axios from "../utils/Axios";
+import checkIfUserIsAuth from "../utils/checkIfUserIsAuth"; //bring in checkIfUserIsAuth
+import Axios from "../utils/Axios"; //bring in Axios
 
-import "./Signup.css";
+import "./Signup.css"; //bring in css
 export class Signup extends Component {
+  //make signup component and assign state
   state = {
     firstName: "",
     lastName: "",
@@ -33,20 +34,24 @@ export class Signup extends Component {
   //TODO max character limit for inputs, no whitespace, min lengths, etc.
 
   componentDidMount() {
-    let isAuth = checkIfUserIsAuth();
+    //runs on after render and on refresh
+    let isAuth = checkIfUserIsAuth(); //true or false
 
     if (isAuth) {
+      //if true then /movie path
       this.props.history.push("/movie");
     }
   }
 
   handleOnChange = (event) => {
+    //on change event
     this.setState(
       {
-        [event.target.name]: event.target.value,
+        [event.target.name]: event.target.value, //set the corresponding state to input value
       },
       () => {
         if (
+          //handle the various input types and if any errors then button is disabled
           event.target.name === "firstName" ||
           event.target.name === "lastName"
         ) {
@@ -70,6 +75,7 @@ export class Signup extends Component {
   };
 
   handleFirstNameAndLastNameInput = (event) => {
+    //check first and last name for alpha chars
     if (this.state[event.target.name].length > 0) {
       if (isAlpha(this.state[event.target.name])) {
         this.setState(
@@ -92,6 +98,7 @@ export class Signup extends Component {
         );
       }
     } else {
+      //check first and last name for empty
       this.setState(
         {
           [`${event.target.name}Error`]: `${event.target.placeholder} cannot be empty.`,
@@ -106,6 +113,7 @@ export class Signup extends Component {
 
   handlesUsernameInput = (event) => {
     if (this.state.username.length > 0) {
+      //if alphanumeric and length > 0 ->no errors
       if (isAlphanumeric(this.state.username)) {
         this.setState(
           {
@@ -116,6 +124,7 @@ export class Signup extends Component {
           // }
         );
       } else {
+        //alphanumeric only error
         this.setState(
           {
             usernameError: `${event.target.placeholder} can only have alphanumeric characters.`,
@@ -127,6 +136,7 @@ export class Signup extends Component {
         );
       }
     } else {
+      //empty error
       this.setState(
         {
           usernameError: `${event.target.placeholder} cannot be empty.`,
@@ -141,6 +151,7 @@ export class Signup extends Component {
 
   handlesEmailInput = (event) => {
     if (this.state.email.length === 0) {
+      //if empty then empty error
       this.setState(
         {
           emailError: "Email cannot be empty.",
@@ -152,6 +163,7 @@ export class Signup extends Component {
       );
     } else {
       if (isEmail(this.state.email)) {
+        //if valid email format then no error
         this.setState(
           {
             emailError: "",
@@ -161,6 +173,7 @@ export class Signup extends Component {
           // }
         );
       } else {
+        //invalid email error
         this.setState(
           {
             emailError: "Please enter a valid Email!",
@@ -177,6 +190,7 @@ export class Signup extends Component {
   //i want it to check to see if the password is strong, if it is then no error message. but if the password doesn't match the confirm password block then I want the confirm password block to throw a matching error
 
   handlesPasswordInput = () => {
+    //if password was in focus and the password doesn't match confirm password field then throw error
     if (this.state.confirmPasswordOnFocus) {
       if (this.state.password !== this.state.confirmPassword) {
         this.setState(
@@ -190,6 +204,7 @@ export class Signup extends Component {
         );
       } else {
         this.setState(
+          //otherwise no error
           {
             confirmPasswordError: "",
           }
@@ -202,6 +217,7 @@ export class Signup extends Component {
 
     if (this.state.password.length > 0) {
       if (isStrongPassword(this.state.password)) {
+        //if length > 0 and is strong password then no error
         this.setState(
           {
             passwordError: "",
@@ -212,6 +228,7 @@ export class Signup extends Component {
         );
       } else {
         this.setState(
+          //else strong password error
           {
             passwordError: `Password must be at least 8 characters long, have at least one uppercase and lowercase letter, and contain at least one special character.`,
             isButtonDisabled: true,
@@ -222,6 +239,7 @@ export class Signup extends Component {
         );
       }
     } else {
+      //else it is empty so empty error
       this.setState(
         {
           passwordError: `Password cannot be empty`,
@@ -236,6 +254,7 @@ export class Signup extends Component {
 
   handlesConfirmPasswordInput = () => {
     if (this.state.confirmPassword.length > 0) {
+      //length > 0 and passwords match then no error
       if (this.state.confirmPassword === this.state.password) {
         this.setState(
           {
@@ -247,6 +266,7 @@ export class Signup extends Component {
         );
       } else {
         this.setState(
+          //else passwords don't match
           {
             confirmPasswordError: "Your passwords do not match!",
             isButtonDisabled: true,
@@ -260,7 +280,7 @@ export class Signup extends Component {
   };
 
   handleOnSubmit = async (event) => {
-    event.preventDefault();
+    event.preventDefault(); //prevent page reload
 
     try {
       let userInputObj = {
@@ -269,10 +289,11 @@ export class Signup extends Component {
         username: this.state.username,
         email: this.state.email,
         password: this.state.password,
-      };
-      let success = await Axios.post("/api/user/sign-up", userInputObj);
+      }; //obj made from user input
+      let success = await Axios.post("/api/user/sign-up", userInputObj); //hit signup path and supply userinputobj
       console.log(success);
       toast.success(`User created - Please login`, {
+        //toast success
         position: "top-center",
         autoClose: 5000,
         hideProgressBar: false,
@@ -282,9 +303,11 @@ export class Signup extends Component {
         progress: undefined,
       });
     } catch (e) {
+      //catch errors
       console.log(e.response);
       console.log(e.response.data.message);
       toast.error(`🦄 ${e.response.data.message}`, {
+        //toast error
         position: "top-center",
         autoClose: 5000,
         hideProgressBar: false,
@@ -297,6 +320,7 @@ export class Signup extends Component {
   };
 
   handleOnBlur = (event) => {
+    //if a field is empty when focus leaves then this helps display error message for empty field
     if (this.state[event.target.name].length === 0) {
       this.setState({
         [`${event.target.name}Error`]: `${event.target.placeholder} cannot be empty`,
@@ -339,8 +363,11 @@ export class Signup extends Component {
 
   //any time setState called componentDidUpdate is called
   componentDidUpdate = (prevProps, prevState) => {
+    //always this order for 1st 2 args
     if (prevState.isButtonDisabled === true) {
+      //is the button was disabled
       if (
+        //and all the fields were in focus
         this.state.firstNameOnFocus &&
         this.state.lastNameOnFocus &&
         this.state.usernameOnFocus &&
@@ -349,6 +376,7 @@ export class Signup extends Component {
         this.state.confirmPasswordOnFocus
       ) {
         if (
+          //and we don't have any errors and the passwords match each other
           this.state.firstNameError.length === 0 &&
           this.state.lastNameError.length === 0 &&
           this.state.usernameError.length === 0 &&
@@ -357,6 +385,7 @@ export class Signup extends Component {
           this.state.confirmPasswordError.length === 0 &&
           this.state.password === this.state.confirmPassword
         ) {
+          //then enable the button
           this.setState({
             isButtonDisabled: false,
           });
@@ -366,6 +395,7 @@ export class Signup extends Component {
   };
 
   handleInputOnFocus = (event) => {
+    //handles the focus for each input
     if (!this.state[`${event.target.name}OnFocus`]) {
       this.setState({
         [`${event.target.name}OnFocus`]: true,
@@ -387,9 +417,10 @@ export class Signup extends Component {
       emailError,
       passwordError,
       confirmPasswordError,
-    } = this.state;
+    } = this.state; //destructure state
 
     return (
+      //jsx with func tied in
       <div className="container">
         <div className="form-text">Sign up</div>
         <div className="form-div">
@@ -511,4 +542,4 @@ export class Signup extends Component {
     );
   }
 }
-export default Signup;
+export default Signup; //export signup

@@ -1,11 +1,12 @@
-import React, { Component } from "react";
+import React, { Component } from "react"; //bring in react, axios, react-router-dom
 import axios from "axios";
 import { Link } from "react-router-dom";
 
-import "./Movie.css";
+import "./Movie.css"; //bring in css
 
-const URL = "http://localhost:8080";
+const URL = "http://localhost:8080"; //set URL variable
 export class Movie extends Component {
+  // make movie component
   state = {
     movieInput: "",
     movieArray: [],
@@ -13,37 +14,86 @@ export class Movie extends Component {
     errorMessage: "",
   };
 
+  async componentDidMount() {
+    //get some random movies to load on the movie page on initial load and on refresh.
+
+    try {
+      let searchedMovieTitle =
+        window.sessionStorage.getItem("searchedMovieTitle"); //if we have a searched movie title in session storage then get it.
+
+      if (searchedMovieTitle) {
+        //if we have then send get req to get data
+        let userRequest = await axios.get(
+          `https://www.omdbapi.com/?s=${searchedMovieTitle}&apikey=${process.env.REACT_APP_MOVIE_API_KEY}`
+        );
+        console.log(userRequest.data.Search);
+        this.setState({
+          //set movie array with data
+          movieArray: userRequest.data.Search,
+        });
+      } else {
+        let randomMovieArray = [];
+        for (let i = 0; i < 20; i++) {
+          let myRando = Math.floor((Math.random() + 1) * 1000000);
+          let userRequest = await axios.get(
+            `https://www.omdbapi.com/?i=tt${myRando}&apikey=${process.env.REACT_APP_MOVIE_API_KEY}`
+          );
+          console.log(userRequest.data);
+          if (userRequest.data && userRequest.data.Poster !== "N/A") {
+            randomMovieArray.push(userRequest.data);
+          }
+          this.setState({
+            movieArray: randomMovieArray,
+          });
+        }
+      }
+    } catch (e) {
+      //catch errors
+      console.log(e);
+    }
+  }
+
   handleOnChange = (event) => {
+    //handle change to set state for inputs
     this.setState({
       movieInput: [event.target.value],
     });
   };
 
   handleOnSubmit = async (event) => {
-    event.preventDefault();
+    // form submission
+    event.preventDefault(); //prevent reload of whole page
 
     if (this.state.movieInput.length === 0) {
+      //if we don't have input, error -> need input
       this.setState({
         error: true,
         errorMessage: "Please enter a movie or show!",
       });
     } else {
+      //else search the input
       try {
         let searchedShow = this.state.movieInput;
-        let fetchAPIKeyData = await axios.get(`${URL}/api/appid/get-api-key`);
-        let appid = fetchAPIKeyData.data.payload;
-        console.log(appid);
         let userRequest = await axios.get(
-          `https://www.omdbapi.com/?s=${searchedShow}&apikey=${appid}`
+          `https://www.omdbapi.com/?s=${searchedShow}&apikey=${process.env.REACT_APP_MOVIE_API_KEY}`
         );
-        console.log(userRequest);
+
+        window.sessionStorage.setItem(
+          //this sets the local session storage for the searched movie
+          "searchedMovieTitle",
+          this.state.movieInput
+        );
+
         this.setState({
+          //make array with search data
           movieArray: userRequest.data.Search,
         });
       } catch (e) {
+        //catch errors
         console.log(e);
         console.log(e.message);
         this.setState({
+          //set error states
           error: true,
           errorMessage: e.message,
         });
@@ -52,6 +102,7 @@ export class Movie extends Component {
   };
 
   showMovieList = () => {
+    // loop through movieArray and display image and data on page and wrap data with links
     return this.state.movieArray.map((item) => {
       return (
         <ul
@@ -116,6 +167,7 @@ export class Movie extends Component {
   // };
 
   render() {
+    //the form with the input field, button and below that is an array to display all of the data for searched movies
     const { errorMessage } = this.state;
     return (
       <div className="container">
@@ -184,4 +236,4 @@ export class Movie extends Component {
   }
 }
 
-export default Movie;
+export default Movie; //export Movie

@@ -1,6 +1,7 @@
-import React from "react";
+import React from "react"; //bring in react
 import { BrowserRouter as Router, Route } from "react-router-dom"; //bring in BrowserRouter component from react-router-dom and rename it as Router. Route is from react-router-dom as well
 
+//bring in components
 import Signup from "./components/Signup/Signup";
 import Login from "./components/Login/Login";
 import Home from "./components/Home/Home";
@@ -10,10 +11,13 @@ import MovieDetail from "./components/Movie/MovieDetail";
 import PrivateRoute from "./components/PrivateRoute/PrivateRoute";
 
 const MainRouter = (props) => {
+  //make MainRouter component that accepts props obj
   return (
+    //wrap content in Router component
     <Router>
       <Nav user={props.user} handleUserLogout={props.handleUserLogout} />
       <>
+        {/* below are Route components and PrivateRoute components */}
         <PrivateRoute exact path="/movie" component={Movie} />
         <Route exact path="/sign-up" component={Signup} />
         <Route
