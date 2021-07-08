@@ -1,0 +1,26 @@
+.friend-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.friend-label {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.friend-header {
+    font-size: 20px;
+    padding: 20px 0px;
+    text-align: center;
+}
+
+.add-friend-div {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+.add-friend {
+    padding: 5px 15px;
+}
