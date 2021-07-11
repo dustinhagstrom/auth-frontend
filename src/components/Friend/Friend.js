@@ -13,6 +13,7 @@ export class Friend extends Component {
     firstNameInput: "",
     lastNameInput: "",
     mobileNumberInput: "",
+    isButtonDisabled: true,
   };
 
   async componentDidMount() {
@@ -29,16 +30,45 @@ export class Friend extends Component {
   }
 
   handleOnChange = (event) => {
-    console.log(event.target);
     this.setState({
-      firstNameInput: event.target.value,
+      [event.target.name]: event.target.value,
     });
   };
 
-  handleOnSubmit = () => {};
+  handleOnSubmit = async (event) => {
+    //TODO: front-end validations
+    try {
+      let newFriend = {
+        firstName: this.state.firstNameInput,
+        lastName: this.state.lastNameInput,
+        mobileNumber: this.state.mobileNumberInput,
+      };
+      let addedFriend = await Axios.post(
+        `${URL}api/friend/create-friend`,
+        newFriend
+      );
+      let newFriendArray = this.state.friendList;
+      newFriendArray.push(addedFriend.data.payload);
+      this.setState({
+        friendList: newFriendArray,
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
   handleDeleteByID = async (_id) => {
     try {
+      let deletedFriend = await Axios.delete(
+        `${URL}api/friend/delete-friend/${_id}`
+      );
+      //   console.log(deletedFriend.data.payload);
+      let filteredFriends = this.state.friendList.filter(
+        (item) => item._id !== deletedFriend.data.payload._id
+      );
+      this.setState({
+        friendList: filteredFriends,
+      });
     } catch (e) {
       console.log(e);
     }
@@ -112,11 +142,20 @@ export class Friend extends Component {
                 />
               </label>
               <div className="add-friend-div">
-                <button className="add-friend">Add Friend</button>
+                <button type="submit" className="add-friend">
+                  Add Friend
+                </button>
               </div>
             </form>
           </div>
           <table>
+            <thead>
+              <tr>
+                <th>First name</th>
+                <th>Last name</th>
+                <th>Mobile number</th>
+              </tr>
+            </thead>
             {this.state.friendList.map((item) => {
               return (
                 <FriendList

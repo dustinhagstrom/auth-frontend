@@ -37,6 +37,10 @@ export class FriendList extends Component {
     });
   };
 
+  handleDeleteOnClick = (_id) => {
+    this.props.handleDeleteByID(_id);
+  };
+
   render() {
     const {
       canEdit,
@@ -85,32 +89,43 @@ export class FriendList extends Component {
               <td>{mobileNumber}</td>
             </>
           )}
-          {canEdit ? (
+          <>
+            {canEdit ? (
+              <td>
+                <button
+                  onClick={() => {
+                    this.handleSubmitOnClick(
+                      _id,
+                      editFirstNameInput,
+                      editLastNameInput,
+                      editMobilePhoneInput
+                    );
+                  }}
+                >
+                  Submit
+                </button>
+              </td>
+            ) : (
+              <td>
+                <button
+                  onClick={() => {
+                    this.handleEditOnClick(_id);
+                  }}
+                >
+                  Edit Friend
+                </button>
+              </td>
+            )}
             <td>
               <button
                 onClick={() => {
-                  this.handleSubmitOnClick(
-                    _id,
-                    editFirstNameInput,
-                    editLastNameInput,
-                    editMobilePhoneInput
-                  );
+                  this.handleDeleteOnClick(_id);
                 }}
               >
-                Submit
+                Delete
               </button>
             </td>
-          ) : (
-            <td>
-              <button
-                onClick={() => {
-                  this.handleEditOnClick(_id);
-                }}
-              >
-                Edit Friend
-              </button>
-            </td>
-          )}
+          </>
         </tr>
       </tbody>
     );
