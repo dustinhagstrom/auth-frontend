@@ -27,6 +27,8 @@ export class Login extends Component {
     if (isAuth) {
       //if true then we are logged in -> go to /movie path
       this.props.history.push("/movie");
+    } else {
+      this.props.handleUserLogout();
     }
   }
 

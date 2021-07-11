@@ -1,23 +1,22 @@
-import React, { Component } from "react";
+import React from "react";
+
 import Friend from "../Friend/Friend";
 import EditProfile from "../EditProfile/EditProfile";
 
-export class Profile extends Component {
-  render() {
-    return (
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "row",
-          alignItems: "flex-start",
-          justifyContent: "space-evenly",
-        }}
-      >
-        <EditProfile />
-        <Friend />
-      </div>
-    );
-  }
+function Profile(props) {
+  return (
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "row",
+        alignItems: "flex-start",
+        justifyContent: "space-evenly",
+      }}
+    >
+      <EditProfile props={props} />
+      <Friend />
+    </div>
+  );
 }
 
 export default Profile;

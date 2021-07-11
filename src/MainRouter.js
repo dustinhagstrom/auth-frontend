@@ -26,7 +26,11 @@ const MainRouter = (props) => {
           exact
           path="/login"
           render={(routerProps) => (
-            <Login {...routerProps} handleUserLogin={props.handleUserLogin} />
+            <Login
+              {...routerProps}
+              handleUserLogin={props.handleUserLogin}
+              handleUserLogout={props.handleUserLogout}
+            />
           )}
         />
         {/* <Route

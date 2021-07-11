@@ -17,10 +17,16 @@
 
 .add-friend-div {
     display: flex;
-    justify-content: center;
+    justify-content: flex-end;
     margin-top: 10px;
 }
 
 .add-friend {
     padding: 5px 15px;
+}
+
+.friend-info-table {
+    font-size: 18px;
+    text-indent: none;
+    text-align: left;
 }

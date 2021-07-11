@@ -104,11 +104,11 @@ export class Friend extends Component {
 
   render() {
     return (
-      <div className="friend-component">
-        <div>
+      <div className="friend-component" style={{ width: "45%" }}>
+        <div style={{ width: "100%" }}>
           <div className="friend-header">Add Friends</div>
           <div className="form-div">
-            <form onSubmit={this.handleOnSubmit}>
+            <form onSubmit={this.handleOnSubmit} style={{ width: "100%" }}>
               <label className="friend-label">
                 Friend's First Name
                 <input
@@ -148,9 +148,15 @@ export class Friend extends Component {
               </div>
             </form>
           </div>
-          <table>
+          <table
+            style={{
+              width: "100%",
+              borderCollapse: "separate",
+              borderSpacing: "25px 10px",
+            }}
+          >
             <thead>
-              <tr>
+              <tr className="friend-info-table">
                 <th>First name</th>
                 <th>Last name</th>
                 <th>Mobile number</th>
