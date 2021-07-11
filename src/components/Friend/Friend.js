@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import axios from "axios";
+import Axios from "../utils/Axios";
 
 import FriendList from "./FriendList";
 
@@ -17,24 +17,60 @@ export class Friend extends Component {
 
   async componentDidMount() {
     try {
-      let allFriends = await axios.get(`${URL}api/friend/get-all-friends`);
+      let allFriends = await Axios.get(`${URL}api/friend/get-all-friends`);
 
-      console.log(allFriends);
-      //   this.setState({
-      //       friendList:
-      //   })
+      console.log(allFriends.data.friends);
+      this.setState({
+        friendList: allFriends.data.friends,
+      });
     } catch (e) {
       console.log(e);
     }
   }
 
-  handleOnChange = () => {};
+  handleOnChange = (event) => {
+    console.log(event.target);
+    this.setState({
+      firstNameInput: event.target.value,
+    });
+  };
 
   handleOnSubmit = () => {};
 
-  handleDeleteByID = () => {};
+  handleDeleteByID = async (_id) => {
+    try {
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
-  handleEditByID = () => {};
+  handleEditByID = async (
+    _id,
+    editFirstNameInput,
+    editLastNameInput,
+    editMobilePhoneInput
+  ) => {
+    try {
+      await Axios.put(`${URL}api/friend/edit-friend/${_id}`, {
+        firstName: editFirstNameInput,
+        lastName: editLastNameInput,
+        mobileNumber: editMobilePhoneInput,
+      });
+      let updatedFriendListArray = this.state.friendList.map((item) => {
+        if (item._id === _id) {
+          item.firstName = editFirstNameInput;
+          item.lastName = editLastNameInput;
+          item.mobileNumber = editMobilePhoneInput;
+        }
+        return item;
+      });
+      this.setState({
+        friendList: updatedFriendListArray,
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
   render() {
     return (
@@ -50,6 +86,7 @@ export class Friend extends Component {
                   className="friend-info"
                   name="firstNameInput"
                   placeholder="Enter Friend's First Name"
+                  value={this.state.firstNameInput}
                   onChange={this.handleOnChange}
                 />
               </label>

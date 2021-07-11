@@ -8,6 +8,7 @@ export class EditProfile extends Component {
     lastNameInput: "",
     mobileNumberInput: "",
     emailInput: "",
+    usernameInput: "",
     passwordInput: "",
   };
 
@@ -18,61 +19,75 @@ export class EditProfile extends Component {
   render() {
     return (
       <div className="form-div">
+        <div className="edit-header">Edit Your Profile</div>
         <div>
-          <div className="edit-header">Edit Your Profile</div>
-          <form className="user-info" onSubmit={this.handleOnSubmit}>
-            <label className="user-label">
-              First Name
-              <input
-                type="text"
-                className="input-box"
-                name="firstNameInput"
-                placeholder="firstName"
-                onChange={this.handleOnChange}
-              />
-            </label>
-            <label className="user-label">
-              Last Name
-              <input
-                type="text"
-                className="input-box"
-                name="lastNameInput"
-                placeholder="lastName"
-                onChange={this.handleOnChange}
-              />
-            </label>
-            <label className="user-label">
-              Email
-              <input
-                type="email"
-                className="input-box"
-                name="emailInput"
-                placeholder="email"
-                onChange={this.handleOnChange}
-              />
-            </label>
-            <label className="user-label">
-              Username
-              <input
-                type="text"
-                className="input-box"
-                name="usernameInput"
-                placeholder="username"
-                onChange={this.handleOnChange}
-              />
-            </label>
-            <label className="user-label">
-              Password
-              <input
-                type="password"
-                className="input-box"
-                name="passwordInput"
-                placeholder="enter new password if desired"
-                onChange={this.handleOnChange}
-              />
-            </label>
+          <form onSubmit={this.handleOnSubmit} className="user-info">
+            <div>
+              <label className="user-label">
+                First Name
+                <input
+                  type="text"
+                  className="input-box"
+                  name="firstNameInput"
+                  placeholder="firstName"
+                  value={this.state.firstNameInput}
+                  onChange={this.handleOnChange}
+                />
+              </label>
+            </div>
+            <div>
+              <label className="user-label">
+                Last Name
+                <input
+                  type="text"
+                  className="input-box"
+                  name="lastNameInput"
+                  placeholder="lastName"
+                  value={this.state.lastNameInput}
+                  onChange={this.handleOnChange}
+                />
+              </label>
+            </div>
+            <div>
+              <label className="user-label">
+                Email
+                <input
+                  type="email"
+                  className="input-box"
+                  name="emailInput"
+                  placeholder="email"
+                  onChange={this.handleOnChange}
+                />
+              </label>
+            </div>
+            <div>
+              <label className="user-label">
+                Username
+                <input
+                  type="text"
+                  className="input-box"
+                  name="usernameInput"
+                  placeholder="username"
+                  onChange={this.handleOnChange}
+                />
+              </label>
+            </div>
+            <div>
+              <label className="user-label">
+                Password
+                <input
+                  type="password"
+                  className="input-box"
+                  name="passwordInput"
+                  placeholder="enter new password if desired"
+                  onChange={this.handleOnChange}
+                />
+              </label>
+            </div>
             <div className="button-div">
-              <button className="submit-edit">Submit Changes</button>
+              <button type="submit" className="submit-edit">
+                Submit Changes
+              </button>
             </div>
           </form>
         </div>
