@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 
-export class FriendList extends Component {
+export class FriendList1 extends Component {
   state = {
     editFirstNameInput: this.props.item.firstName,
     editLastNameInput: this.props.item.lastName,
@@ -57,6 +57,7 @@ export class FriendList extends Component {
               <td>
                 <input
                   type="text"
+                  style={{ width: "125px" }}
                   name="editFirstNameInput"
                   value={editFirstNameInput}
                   onChange={this.handleOnChange}
@@ -65,6 +66,7 @@ export class FriendList extends Component {
               </td>
               <td>
                 <input
+                  style={{ width: "125px" }}
                   type="text"
                   name="editLastNameInput"
                   value={editLastNameInput}
@@ -75,6 +77,7 @@ export class FriendList extends Component {
               <td>
                 <input
                   type="tel"
+                  style={{ width: "125px" }}
                   name="editMobilePhoneInput"
                   value={editMobilePhoneInput}
                   onChange={this.handleOnChange}
@@ -132,4 +135,4 @@ export class FriendList extends Component {
   }
 }
 
-export default FriendList;
+export default FriendList1;

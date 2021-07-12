@@ -8,6 +8,7 @@ import Home from "./components/Home/Home";
 import Nav from "./components/Nav/Nav";
 import Movie from "./components/Movie/Movie";
 import MovieDetail from "./components/Movie/MovieDetail";
+import Profile1 from "./components/Profile/Profile1";
 import Profile from "./components/Profile/Profile";
 import PrivateRoute from "./components/PrivateRoute/PrivateRoute";
 

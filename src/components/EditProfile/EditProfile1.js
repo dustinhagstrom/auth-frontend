@@ -3,10 +3,10 @@ import { isAlpha, isAlphanumeric, isEmail, isStrongPassword } from "validator";
 
 import Axios from "../utils/Axios";
 
-import "./EditProfile.css";
+import "./EditProfile1.css";
 
 const URL = "http://localhost:8080/";
-export class EditProfile extends Component {
+export class EditProfile1 extends Component {
   state = {
     firstNameInput: "",
     lastNameInput: "",
@@ -169,7 +169,7 @@ export class EditProfile extends Component {
       }
     } else {
       this.setState({
-        passwordInputError: `Password cannot be empty`,
+        passwordInputError: ``,
         isButtonDisabled: true,
       });
     }
@@ -331,4 +331,4 @@ export class EditProfile extends Component {
   }
 }
 
-export default EditProfile;
+export default EditProfile1;

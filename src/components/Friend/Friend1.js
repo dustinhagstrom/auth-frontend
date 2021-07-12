@@ -1,13 +1,13 @@
 import React, { Component } from "react";
 import Axios from "../utils/Axios";
 
-import FriendList from "./FriendList";
+import FriendList1 from "./FriendList1";
 
-import "./Friend.css";
+import "./Friend1.css";
 
 const URL = "http://localhost:8080/";
 
-export class Friend extends Component {
+export class Friend1 extends Component {
   state = {
     friendList: [],
     firstNameInput: "",
@@ -148,6 +148,7 @@ export class Friend extends Component {
               </div>
             </form>
           </div>
+          <div className="friend-header">Your Friends</div>
           <table
             style={{
               width: "100%",
@@ -164,7 +165,7 @@ export class Friend extends Component {
             </thead>
             {this.state.friendList.map((item) => {
               return (
-                <FriendList
+                <FriendList1
                   item={item}
                   key={item._id}
                   inputID={item._id}
@@ -180,4 +181,4 @@ export class Friend extends Component {
   }
 }
 
-export default Friend;
+export default Friend1;
