@@ -7,7 +7,10 @@ export class Profile extends Component {
   render() {
     return (
       <div>
-        <UpdateProfile />
+        <UpdateProfile
+          handleUserLogout={this.props.handleUserLogout}
+          history={this.props.history}
+        />
       </div>
     );
   }

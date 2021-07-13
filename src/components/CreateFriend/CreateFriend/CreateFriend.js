@@ -20,11 +20,12 @@ export class CreateFriend extends Component {
   handleGetAllFriends = async () => {
     try {
       let getAllFriends = await Axios.get("/api/friend/get-all-friends");
+
       this.setState({
-        friendArray: getAllFriends.data.friends,
+        friendArray: getAllFriends.data.payload.friends,
       });
     } catch (e) {
-      toast.error(e.response.data.message);
+      toast.error(e);
     }
   };
 
@@ -52,6 +53,29 @@ export class CreateFriend extends Component {
       console.log(e);
       toast.error(e.response.data.payload);
     }
+  };
+
+  handleUpdatedFriendData = (user) => {
+    let updatedFriendArray = this.state.friendArray.map((friend) => {
+      if (friend._id === user._id) {
+        friend = user;
+      }
+      return friend;
+    });
+
+    this.setState({
+      friendArray: updatedFriendArray,
+    });
+  };
+
+  handleDeleteByFriend = (user) => {
+    let newArray = this.state.friendArray.filter(
+      (friend) => friend._id !== user._id
+    );
+
+    this.setState({
+      friendArray: newArray,
+    });
   };
   render() {
     return (
@@ -89,7 +113,11 @@ export class CreateFriend extends Component {
           </form>
         </div>
         <hr />
-        <Friend friendArray={this.state.friendArray} />
+        <Friend
+          friendArray={this.state.friendArray}
+          handleUpdatedFriendData={this.handleUpdatedFriendData}
+          handleDeleteByFriend={this.handleDeleteByFriend}
+        />
       </>
     );
   }

@@ -18,7 +18,14 @@ export class Friend extends Component {
           </thead>
           <tbody>
             {this.props.friendArray.map((friend) => {
-              return <FriendList key={friend._id} friend={friend} />;
+              return (
+                <FriendList
+                  key={friend._id}
+                  friend={friend}
+                  handleUpdatedFriendData={this.props.handleUpdatedFriendData}
+                  handleDeleteByFriend={this.props.handleDeleteByFriend}
+                />
+              );
             })}
           </tbody>
         </table>

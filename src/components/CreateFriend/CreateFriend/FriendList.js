@@ -1,4 +1,7 @@
 import React, { Component } from "react";
+import { toast } from "react-toastify";
+
+import Axios from "../../utils/Axios";
 
 export class FriendList extends Component {
   state = {
@@ -22,6 +25,39 @@ export class FriendList extends Component {
     });
   };
 
+  handleUpdateClick = async (id) => {
+    let editedFriend = {
+      firstName: this.state.firstName,
+      lastName: this.state.lastName,
+      mobileNumber: this.state.mobileNumber,
+    };
+    try {
+      let updatedFriend = await Axios.put(
+        `/api/friend/edit-friend/${id}`,
+        editedFriend
+      );
+      console.log(updatedFriend);
+      this.handleToggle();
+      this.props.handleUpdatedFriendData(updatedFriend.data.payload);
+      console.log(updatedFriend.data.payload);
+      this.setState({
+        firstName: updatedFriend.data.payload.firstName,
+        lastName: updatedFriend.data.payload.lastName,
+        mobileNumber: updatedFriend.data.payload.mobileNumber,
+      });
+    } catch (e) {
+      toast.error(e.response.data.payload);
+    }
+  };
+
+  handleDeleteClick = async (id) => {
+    try {
+      let deletedFriend = await Axios.delete(`/api/friend/delete-friend/${id}`);
+      this.props.handleDeleteByFriend(deletedFriend.data.payload);
+    } catch (e) {
+      toast.error(e.response.data.payload);
+    }
+  };
   render() {
     const { friend } = this.props;
     const { toggle } = this.state;
@@ -59,8 +95,25 @@ export class FriendList extends Component {
           </>
         )}
 
-        <td onClick={this.handleToggle}>Edit</td>
-        <td>Delete</td>
+        {toggle ? (
+          <td
+            onClick={() => {
+              this.handleUpdateClick(friend._id);
+            }}
+          >
+            update
+          </td>
+        ) : (
+          <td onClick={this.handleToggle}>Edit</td>
+        )}
+
+        <td
+          onClick={() => {
+            this.handleDeleteClick(friend._id);
+          }}
+        >
+          Delete
+        </td>
       </tr>
     );
   }
