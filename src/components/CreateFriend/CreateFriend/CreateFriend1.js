@@ -1,13 +1,13 @@
 import React, { Component } from "react";
-import Axios from "../utils/Axios";
+import Axios from "../../utils/Axios";
 
-import FriendList1 from "./FriendList1";
+import FriendList1 from "./Friend1";
 
-import "./Friend1.css";
+import "./CreateFriend1.css";
 
 const URL = "http://localhost:8080/";
 
-export class Friend1 extends Component {
+export class CreateFriend1 extends Component {
   state = {
     friendList: [],
     firstNameInput: "",
@@ -181,4 +181,4 @@ export class Friend1 extends Component {
   }
 }
 
-export default Friend1;
+export default CreateFriend1;

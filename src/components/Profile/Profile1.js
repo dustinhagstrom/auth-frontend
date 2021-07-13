@@ -1,7 +1,7 @@
 import React from "react";
 
-import Friend1 from "../Friend/Friend1";
-import EditProfile1 from "../EditProfile/EditProfile1";
+import CreateFriend1 from "../CreateFriend/CreateFriend/CreateFriend1";
+import UpdateProfile1 from "./UpdateProfile/UpdateProfile1";
 
 function Profile1(props) {
   return (
@@ -13,8 +13,8 @@ function Profile1(props) {
         justifyContent: "space-evenly",
       }}
     >
-      <EditProfile1 props={props} />
-      <Friend1 />
+      <UpdateProfile1 props={props} />
+      <CreateFriend1 />
     </div>
   );
 }

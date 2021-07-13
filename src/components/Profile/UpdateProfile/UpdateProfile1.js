@@ -1,12 +1,12 @@
 import React, { Component } from "react";
 import { isAlpha, isAlphanumeric, isEmail, isStrongPassword } from "validator";
 
-import Axios from "../utils/Axios";
+import Axios from "../../utils/Axios";
 
-import "./EditProfile1.css";
+import "./UpdateProfile1.css";
 
 const URL = "http://localhost:8080/";
-export class EditProfile1 extends Component {
+export class UpdateProfile1 extends Component {
   state = {
     firstNameInput: "",
     lastNameInput: "",
@@ -331,4 +331,4 @@ export class EditProfile1 extends Component {
   }
 }
 
-export default EditProfile1;
+export default UpdateProfile1;
