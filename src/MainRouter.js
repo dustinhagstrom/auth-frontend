@@ -21,7 +21,12 @@ const MainRouter = (props) => {
       <>
         {/* below are Route components and PrivateRoute components */}
         <PrivateRoute exact path="/movie" component={Movie} />
-        <PrivateRoute exact path="/profile" component={Profile} />
+        <PrivateRoute
+          exact
+          path="/profile"
+          handleUserLogout={props.handleUserLogout}
+          component={Profile}
+        />
         <Route exact path="/sign-up" component={Signup} />
         <Route
           exact

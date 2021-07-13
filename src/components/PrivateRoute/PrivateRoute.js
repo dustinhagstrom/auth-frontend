@@ -21,7 +21,7 @@ import checkIfUserIsAuth from "../utils/checkIfUserIsAuth"; // bring in checkuse
 // };
 
 //privateroute functional component that takes props obj as arg.
-const PrivateRoute = ({ component: Component, user, ...rest }) => {
+const PrivateRoute = ({ component: Component, handleUserLogout, ...rest }) => {
   console.log(Component); //notice the capital letter for Component
   return (
     <Route
@@ -31,7 +31,7 @@ const PrivateRoute = ({ component: Component, user, ...rest }) => {
         routerProps //routerProps inherent to Route??
       ) =>
         checkIfUserIsAuth() ? ( //display component if user logged in else redirect to login
-          <Component {...routerProps} />
+          <Component {...routerProps} handleUserLogout={handleUserLogout} />
         ) : (
           <Redirect to="/login" />
         )

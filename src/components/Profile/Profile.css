@@ -20,3 +20,33 @@
     color: white;
     width: 95%;
 }
+
+#friends {
+    width: 100%;
+}
+
+#friends thead tr th,
+#friends tbody tr td {
+    border: 1px solid #dddddd;
+    padding: 10px;
+}
+
+#friends #tr th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background-color: purple;
+    color: white;
+}
+
+#friends tbody tr {
+    text-align: left;
+}
+
+#friends tbody tr:nth-child(even) {
+    background-color: #fb5757;
+}
+
+#friends tbody tr:hover {
+    background-color: #ddd;
+}
