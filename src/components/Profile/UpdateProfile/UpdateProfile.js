@@ -36,7 +36,7 @@ export class UpdateProfile extends Component {
   };
 
   handleUserUpdateSubmit = async (event) => {
-    event.preventDefault();
+    event.preventDefault(); //used with form submit buttons mostly, i believe
     try {
       let updatedUserProfile = await Axios.put("/api/user/update-profile", {
         firstName: this.state.firstName,
@@ -46,7 +46,7 @@ export class UpdateProfile extends Component {
       });
 
       if (updatedUserProfile.status === 202) {
-        console.log(this.props);
+        //status 202 if the user password was updated. -> logout user
         this.props.handleUserLogout();
         this.props.history.push("/login");
       } else {

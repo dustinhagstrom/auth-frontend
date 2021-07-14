@@ -23,9 +23,6 @@ export class App extends Component {
 
       let decodedJWTToken = jwtDecode(getJwtToken); //use jwtDecode to get data from token
 
-      console.log("currentTime", currentTime);
-      console.log("decodedJWTToken", decodedJWTToken);
-
       if (decodedJWTToken.exp < currentTime) {
         //if it has expired
         this.handleUserLogout(); //go to logout func

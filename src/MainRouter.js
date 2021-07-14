@@ -9,7 +9,7 @@ import Nav from "./components/Nav/Nav";
 import Movie from "./components/Movie/Movie";
 import MovieDetail from "./components/Movie/MovieDetail";
 import CreateFriend from "./components/CreateFriend/CreateFriend/CreateFriend";
-import Profile1 from "./components/Profile/Profile1";
+// import Profile1 from "./components/Profile/Profile1";
 import Profile from "./components/Profile/Profile";
 import PrivateRoute from "./components/PrivateRoute/PrivateRoute";
 

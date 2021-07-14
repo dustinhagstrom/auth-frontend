@@ -149,14 +149,11 @@ export class Login extends Component {
         password: this.state.password,
       };
       let success = await Axios.post("api/user/login", userInputObj); //use Axios to make post req. with user obj to login
-      console.log(success);
       let jwtToken = success.data.payload; //this is the token that was payload from backend
-      console.log(jwtToken);
 
       setAxiosAuthToken(jwtToken); //tie the jwtToken to this instance. Now Axios will have this as the token. this sets up the authorization bearer token for sms message
 
       let decodedToken = jwtDecode(jwtToken); //use jwt decode to decode the jwt token into information
-      console.log(decodedToken);
 
       this.props.handleUserLogin(decodedToken); //send the decoded token to app.js handleuserlogin func
 
@@ -164,7 +161,6 @@ export class Login extends Component {
 
       this.props.history.push("/movie"); //the push here is from Router props history object. this handles the redirect
 
-      console.log(success.data.message);
       toast.success("🦄 Login success!", {
         //make a toast happen
         position: "top-center",
@@ -177,13 +173,10 @@ export class Login extends Component {
       });
     } catch (e) {
       //catch errors
-      console.log(e);
-      console.log(e.response.status);
       if (e.response.status === 429) {
         //too many req status code
         toast.error(e.response.data); //make a error toast with response data
       }
-      console.log(e.response.data.payload);
       toast.error(`🦄 ${e.response.data.payload}`, {
         //make a toast with all other error codes
         position: "top-center",

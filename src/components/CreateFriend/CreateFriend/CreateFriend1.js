@@ -20,7 +20,6 @@ export class CreateFriend1 extends Component {
     try {
       let allFriends = await Axios.get(`${URL}api/friend/get-all-friends`);
 
-      console.log(allFriends.data.friends);
       this.setState({
         friendList: allFriends.data.friends,
       });
@@ -62,7 +61,6 @@ export class CreateFriend1 extends Component {
       let deletedFriend = await Axios.delete(
         `${URL}api/friend/delete-friend/${_id}`
       );
-      //   console.log(deletedFriend.data.payload);
       let filteredFriends = this.state.friendList.filter(
         (item) => item._id !== deletedFriend.data.payload._id
       );
@@ -164,11 +162,12 @@ export class CreateFriend1 extends Component {
               </tr>
             </thead>
             {this.state.friendList.map((item) => {
+              console.log(typeof item._id);
               return (
                 <FriendList1
                   item={item}
                   key={item._id}
-                  inputID={item._id}
+                  inputID={item._id.toString()}
                   handleDeleteByID={this.handleDeleteByID}
                   handleEditByID={this.handleEditByID}
                 />

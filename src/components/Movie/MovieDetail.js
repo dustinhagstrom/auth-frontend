@@ -1,9 +1,6 @@
 import React, { Component } from "react"; //bring in react, axios
 import axios from "axios";
 import Axios from "../utils/Axios"; //bring in Axios
-import { toast } from "react-toastify";
-
-const URL = "http://localhost:8080"; // set URL
 
 export class MovieDetail extends Component {
   //make MovieDetail component
@@ -71,7 +68,6 @@ export class MovieDetail extends Component {
           });
         }
       );
-      console.log(result);
     } catch (e) {
       //catch errors
       console.log(e);
@@ -129,8 +125,6 @@ export class MovieDetail extends Component {
     }
   };
   handleSelectChange = (event) => {
-    console.log(JSON.parse(event.target.value));
-
     let selectedUser = JSON.parse(event.target.value);
 
     this.setState({

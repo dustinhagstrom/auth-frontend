@@ -25,7 +25,6 @@ export class UpdateProfile1 extends Component {
   componentDidMount = async () => {
     try {
       let userData = await Axios.get(`${URL}api/user/get-user-info`);
-      console.log(userData.data);
       this.setState({
         firstNameInput: userData.data.firstName,
         lastNameInput: userData.data.lastName,
@@ -77,12 +76,10 @@ export class UpdateProfile1 extends Component {
       //TODO: if password not changed then, do change state. if changed validate, hash and salt -> change state.
     };
     try {
-      console.log("here");
       let editedUser = await Axios.put(
         `${URL}api/user/update-profile`,
         userInputObj
       );
-      console.log(editedUser);
       if (editedUser) {
         window.localStorage.removeItem("jwtToken");
         this.props.props.history.push("/login");

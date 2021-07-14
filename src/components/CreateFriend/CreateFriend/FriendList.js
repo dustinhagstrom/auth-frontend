@@ -36,10 +36,8 @@ export class FriendList extends Component {
         `/api/friend/edit-friend/${id}`,
         editedFriend
       );
-      console.log(updatedFriend);
       this.handleToggle();
       this.props.handleUpdatedFriendData(updatedFriend.data.payload);
-      console.log(updatedFriend.data.payload);
       this.setState({
         firstName: updatedFriend.data.payload.firstName,
         lastName: updatedFriend.data.payload.lastName,

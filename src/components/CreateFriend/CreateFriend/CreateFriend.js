@@ -50,7 +50,6 @@ export class CreateFriend extends Component {
       });
       toast.success("Friend Created!");
     } catch (e) {
-      console.log(e);
       toast.error(e.response.data.payload);
     }
   };

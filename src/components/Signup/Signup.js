@@ -1,7 +1,6 @@
 import React, { Component } from "react"; //bring in react, validator, toast, jwt-decode
 import { isAlpha, isAlphanumeric, isEmail, isStrongPassword } from "validator";
 import { toast } from "react-toastify";
-import jwtDecode from "jwt-decode";
 
 import checkIfUserIsAuth from "../utils/checkIfUserIsAuth"; //bring in checkIfUserIsAuth
 import Axios from "../utils/Axios"; //bring in Axios
@@ -290,8 +289,7 @@ export class Signup extends Component {
         email: this.state.email,
         password: this.state.password,
       }; //obj made from user input
-      let success = await Axios.post("/api/user/sign-up", userInputObj); //hit signup path and supply userinputobj
-      console.log(success);
+      await Axios.post("/api/user/sign-up", userInputObj); //hit signup path and supply userinputobj
       toast.success(`User created - Please login`, {
         //toast success
         position: "top-center",
@@ -304,8 +302,6 @@ export class Signup extends Component {
       });
     } catch (e) {
       //catch errors
-      console.log(e.response);
-      console.log(e.response.data.message);
       toast.error(`🦄 ${e.response.data.message}`, {
         //toast error
         position: "top-center",

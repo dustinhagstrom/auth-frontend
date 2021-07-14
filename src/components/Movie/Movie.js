@@ -1,12 +1,10 @@
 import React, { Component } from "react"; //bring in react, axios, react-router-dom
 import axios from "axios";
-import { Link } from "react-router-dom";
 
 import MovieList from "./MovieList";
 
 import "./Movie.css"; //bring in css
 
-const URL = "http://localhost:8080"; //set URL variable
 export class Movie extends Component {
   // make movie component
   state = {
@@ -16,12 +14,12 @@ export class Movie extends Component {
     movieArray3: [],
     error: null,
     errorMessage: "",
-    pageArray: [],
-    totalCount: 0,
-    totalPage: 0,
-    perPage: 10,
+    pageArray: [], //an array of total number of pages in pagination. ex. [ 1, 2, 3, 4, 5, 6, ...]
+    totalCount: 0, //total number of movie titles
+    totalPage: 0, //total # of pages
+    perPage: 10, //max number of titles per page
     currentPage: 1,
-    maxPageLimit: 10,
+    maxPageLimit: 10, //max number of pages in between prev and next buttons
     minPageLimit: 0,
   };
 
@@ -42,7 +40,7 @@ export class Movie extends Component {
         window.sessionStorage.getItem("searchedMovieTitle"); //if we have a searched movie title in session storage then get it.
 
       if (searchedMovieTitle) {
-        let result = await this.handleSearchedMovie(searchedMovieTitle);
+        let result = await this.handleSearchedMovie(searchedMovieTitle); //throw into movie get req func.
 
         let totalPageArray = this.getTotalPages(
           +result.data.totalResults,
@@ -51,46 +49,31 @@ export class Movie extends Component {
 
         this.setState({
           //set movie array with data
-          movieArray1: result.data.Search,
-          totalPage: +result.data.totalResults,
-          pageArray: totalPageArray,
+          movieInput: searchedMovieTitle, //set to our session storage movie
+          movieArray1: result.data.Search, //set following to return of movie get req.
+          totalCount: +result.data.totalResults,
+          pageArray: totalPageArray, //set pagination array
           // movieArray2: [],
           // movieArray3: [],
         });
-      } else {
-        let randomMovieTitle = this.handleRandomTitle();
-        // let result = await this.handleSearchedMovie(randomMovieTitle);
-        let result = await this.handleSearchedMovie("batman");
+      }
+      //if we didn't have a session storage movie title then do random movie from our preset array
+      else {
+        let randomMovieTitle = this.handleRandomTitle(); //handle random movie generation from our random movie array
+        let result = await this.handleSearchedMovie(randomMovieTitle); //handle get req w/random movie
 
         let totalPageArray = this.getTotalPages(
-          +result.data.totalResults,
+          //input total results and max results per page to calculate # pages.
+          +result.data.totalResults, //convert string to number.
           this.state.perPage
         );
-        console.log(totalPageArray);
 
         this.setState({
+          movie: randomMovieTitle,
           movieArray1: result.data.Search,
-          totalPage: +result.data.totalResults,
+          totalCount: +result.data.totalResults,
           pageArray: totalPageArray,
         });
-
-        // let randomMovieTitle1 = this.handleRandomTitle();
-        // let randomMovieTitle2 = this.handleRandomTitle();
-        // let randomMovieTitle3 = this.handleRandomTitle();
-        // let result1 = await this.handleSearchedMovie(randomMovieTitle1);
-        // let result2 = await this.handleSearchedMovie(randomMovieTitle2);
-        // let result3 = await this.handleSearchedMovie(randomMovieTitle3);
-
-        // let getAllPromiseMovies = Promise.all([result1, result2, result3]);
-
-        // let resolvedMovie = await getAllPromiseMovies;
-        // console.log(resolvedMovie);
-        // this.setState({
-        //   //set movie array with data
-        //   movieArray1: resolvedMovie[0].data.Search,
-        //   movieArray2: resolvedMovie[1].data.Search,
-        //   movieArray3: resolvedMovie[2].data.Search,
-        // });
       }
     } catch (e) {
       console.log(e);
@@ -152,15 +135,18 @@ export class Movie extends Component {
           "searchedMovieTitle",
           this.state.movieInput
         );
+        let totalPageArray = this.getTotalPages(
+          +result.data.totalResults,
+          this.state.perPage
+        );
 
         this.setState({
-          //make array with search data
           movieArray1: result.data.Search,
+          totalCount: +result.data.totalResults,
+          pageArray: totalPageArray,
         });
       } catch (e) {
         //catch errors
-        console.log(e);
-        console.log(e.message);
         this.setState({
           //set error states
           error: true,
@@ -171,8 +157,6 @@ export class Movie extends Component {
   };
 
   showPagination = () => {
-    let totalPages = this.state.totalPage;
-    let perPage = this.state.perPage;
     let currentPage = this.state.currentPage;
     let maxPageLimit = this.state.maxPageLimit;
     let minPageLimit = this.state.minPageLimit;
@@ -180,24 +164,28 @@ export class Movie extends Component {
     const buildPagination = () => {
       return (
         <>
-          {this.state.pageArray.map((number) => {
-            console.log(number < maxPageLimit + 1 && number > minPageLimit);
-
-            if (number < maxPageLimit + 1 && number > minPageLimit) {
+          {this.state.pageArray
+            .filter(
+              (number) => number < maxPageLimit + 1 && number > minPageLimit
+            )
+            .map((number) => {
               return (
                 <span
+                  onClick={() => {
+                    this.handleGoToPage(number);
+                  }}
                   style={{
                     marginRight: 15,
                     marginLeft: 15,
                     color: currentPage === number ? "red" : "black",
+                    cursor: "pointer",
                   }}
-                  key={number}
+                  key={number.toString()}
                 >
                   {number}
                 </span>
               );
-            }
-          })}
+            })}
         </>
       );
     };
@@ -217,6 +205,20 @@ export class Movie extends Component {
     );
   };
 
+  handleGoToPage = (number) => {
+    this.setState(
+      {
+        currentPage: number,
+      },
+      async () => {
+        let result = await this.handleSearchedMovie(this.state.movieInput);
+        this.setState({
+          movieArray1: result.data.Search,
+        });
+      }
+    );
+  };
+
   nextPage = () => {
     this.setState(
       (prevState) => {
@@ -226,7 +228,16 @@ export class Movie extends Component {
         };
       },
       async () => {
-        let result = await this.handleSearchedMovie("batman");
+        let movie = "";
+
+        let searchedMovieTitle =
+          window.sessionStorage.getItem("searchedMovieTitle");
+
+        movie = searchedMovieTitle
+          ? window.sessionStorage.getItem("searchedMovieTitle")
+          : this.state.movie;
+
+        let result = await this.handleSearchedMovie(movie);
         this.setState({
           movieArray1: result.data.Search,
         });
@@ -250,7 +261,16 @@ export class Movie extends Component {
         };
       },
       async () => {
-        let result = await this.handleSearchedMovie("batman");
+        let movie = "";
+
+        let searchedMovieTitle =
+          window.sessionStorage.getItem("searchedMovieTitle");
+
+        movie = searchedMovieTitle
+          ? window.sessionStorage.getItem("searchedMovieTitle")
+          : this.state.movie;
+
+        let result = await this.handleSearchedMovie(movie);
         this.setState({
           movieArray1: result.data.Search,
         });
@@ -304,28 +324,32 @@ export class Movie extends Component {
           <div className="movie-list">
             <MovieList movieArray={this.state.movieArray1} />
           </div>
-          <div className="movie-list-buttons-div">
-            <button
-              className="movie-list-buttons"
-              disabled={this.state.currentPage === 1 ? true : false}
-              onClick={this.prevPage}
-            >
-              Prev
-            </button>
-            {this.showPagination()}
-            <button
-              className="movie-list-buttons"
-              disabled={
-                this.state.currentPage ===
-                this.state.pageArray[this.state.pageArray.length - 1]
-                  ? true
-                  : false
-              }
-              onClick={this.nextPage}
-            >
-              Next
-            </button>
-          </div>
+          {this.state.totalCount <= 10 ? (
+            ""
+          ) : (
+            <div className="movie-list-buttons-div">
+              <button
+                className="movie-list-buttons"
+                disabled={this.state.currentPage === 1 ? true : false}
+                onClick={this.prevPage}
+              >
+                Prev
+              </button>
+              {this.showPagination()}
+              <button
+                className="movie-list-buttons"
+                disabled={
+                  this.state.currentPage ===
+                  this.state.pageArray[this.state.pageArray.length - 1]
+                    ? true
+                    : false
+                }
+                onClick={this.nextPage}
+              >
+                Next
+              </button>
+            </div>
+          )}
           {/* <h3>Fan Favorite</h3>
           <div className="movie-list">
             <MovieList movieArray={this.state.movieArray2} />
